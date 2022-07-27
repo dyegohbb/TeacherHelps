@@ -1,11 +1,13 @@
 package com.teacherhelps.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 
 @Entity
 public class Aluno extends Pessoa {
+	
+	private static final long serialVersionUID = 7305762450475461065L;
 	
 	private String alunoAsd;
 
@@ -14,7 +16,7 @@ public class Aluno extends Pessoa {
 	}
 	
 	public Aluno(Integer codigo, String nome, Long cpf, Long telefone, String email, Endereco endereco,
-			LocalDate dataDeCadastro, Integer codigo2, String alunoAsd) {
+			LocalDateTime dataDeCadastro, Integer codigo2, String alunoAsd) {
 		super(codigo, nome, cpf, telefone, email, endereco, dataDeCadastro);
 		codigo = codigo2;
 		this.alunoAsd = alunoAsd;

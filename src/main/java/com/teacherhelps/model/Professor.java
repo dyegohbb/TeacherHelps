@@ -1,6 +1,6 @@
 package com.teacherhelps.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.ElementCollection;
@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 
 @Entity
 public class Professor extends Pessoa {
+
+	private static final long serialVersionUID = -5813873843480847120L;
 
 	@ElementCollection()
 	private List<Disponibilidade> disponibilidade;
@@ -26,7 +28,7 @@ public class Professor extends Pessoa {
 	};
 	
 	public Professor(Integer codigo, String nome, Long cpf, Long telefone, String email, Endereco endereco,
-			LocalDate dataDeCadastro, List<Disponibilidade> disponibilidade, double valorPorHora, String sobre,
+			LocalDateTime dataDeCadastro, List<Disponibilidade> disponibilidade, double valorPorHora, String sobre,
 			Disciplina disciplina) {
 		super(codigo, nome, cpf, telefone, email, endereco, dataDeCadastro);
 		this.disponibilidade = disponibilidade;

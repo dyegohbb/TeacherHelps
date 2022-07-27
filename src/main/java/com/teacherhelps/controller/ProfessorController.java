@@ -19,10 +19,9 @@ public class ProfessorController {
 	@Autowired
 	private ProfessorService ProfessorService;
 
-	@CrossOrigin(origins = "http://localhost:4200")
+	@CrossOrigin()
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<Professor>> listAll() throws Exception {
-
 //		Professor professor = new Professor();
 //		Endereco endereco = new Endereco();
 //		endereco.setRua("sao joao");
@@ -33,7 +32,7 @@ public class ProfessorController {
 //		endereco.setPais(Pais.BRA);
 //		
 //		professor.setEndereco(endereco);
-//		professor.setDataDeCadastro(LocalDate.now());
+//		professor.setDataDeCadastro(LocalDateTime.now());
 //		professor.setDisciplina(Disciplina.BIOLOGIA);
 //
 //		List<Disponibilidade> disponibilidades = new ArrayList<>();
@@ -44,12 +43,15 @@ public class ProfessorController {
 //		disponibilidades.add(disponibilidade2);
 //		
 //		professor.setDisponibilidade(disponibilidades);
-//		professor.setNome("Pedro Paulo");
-//		professor.setSobre("Aleatorio");
-//		professor.setEmail("pedropaulo@gmail.com");
+//		professor.setNome("Dyego");
+//		professor.setSobre("Sou Dyego");
+//		professor.setEmail("dyegohbb@gmail.com");
 //		professor.setCpf(2222245450L);
 //		professor.setTelefone(8198213455554L);
 //		professor.setValorPorHora(2005.9);
+//		professor.setSenha("root");
+//		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//		professor.setSenha(encoder.encode(professor.getSenha()));
 //		ProfessorService.salvar(professor);
 		List<Professor> professores = ProfessorService.listAll();
 		if (professores.isEmpty()) {

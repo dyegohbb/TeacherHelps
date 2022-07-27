@@ -1,19 +1,14 @@
 package com.teacherhelps.model;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.persistence.Embeddable;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 @Embeddable
 public class Disponibilidade {
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private LocalDateTime dataInicio;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private LocalDateTime dataFim;
 
 	
