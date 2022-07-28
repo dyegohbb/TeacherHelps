@@ -33,9 +33,9 @@ public class Pessoa implements UserDetails {
 	
 	private String nome;
 
-	private Long cpf;
+	private String cpf;
 
-	private Long telefone;
+	private String telefone;
 	
 	@Column(unique = true)
 	private String email;
@@ -57,7 +57,7 @@ public class Pessoa implements UserDetails {
 
 	private LocalDateTime dataDeCadastro;
 
-	public Pessoa(Integer codigo, String nome, Long cpf, Long telefone, String email, Endereco endereco,
+	public Pessoa(Integer codigo, String nome, String cpf, String telefone, String email, Endereco endereco,
 			LocalDateTime dataDeCadastro) {
 		super();
 		this.nome = nome;
@@ -80,19 +80,19 @@ public class Pessoa implements UserDetails {
 		this.nome = nome;
 	}
 
-	public Long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 
-	public void setCpf(Long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 
-	public Long getTelefone() {
+	public String getTelefone() {
 		return telefone;
 	}
 
-	public void setTelefone(Long telefone) {
+	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
 

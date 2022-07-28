@@ -15,7 +15,7 @@ public class Aluno extends Pessoa {
 		super();
 	}
 	
-	public Aluno(Integer codigo, String nome, Long cpf, Long telefone, String email, Endereco endereco,
+	public Aluno(Integer codigo, String nome, String cpf, String telefone, String email, Endereco endereco,
 			LocalDateTime dataDeCadastro, Integer codigo2, String alunoAsd) {
 		super(codigo, nome, cpf, telefone, email, endereco, dataDeCadastro);
 		codigo = codigo2;
