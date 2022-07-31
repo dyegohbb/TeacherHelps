@@ -44,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.GET, "/professor").permitAll()
+		.antMatchers(HttpMethod.POST, "/professor").permitAll()
+		.antMatchers(HttpMethod.POST, "/aluno").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.antMatchers(HttpMethod.GET, "/disciplina").permitAll()
 		.anyRequest().authenticated().and().cors()

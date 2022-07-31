@@ -25,5 +25,14 @@ public enum Disciplina {
 	public void setDisciplina(String disciplina) {
 		this.disciplina = disciplina;
 	}
+
+	public static Disciplina byValue(String disc) {
+		for (Disciplina disciplina : Disciplina.values()) {
+			if(disciplina.disciplina.equals(disc)) {
+				return disciplina;
+			}
+		};
+		return null;
+	}
 	
 }

@@ -42,6 +42,8 @@ public class Pessoa implements UserDetails {
 	
 	private String senha;
 	
+	private double carteira = 0; 
+	
 	private Integer tentatives = 3;
 	
 	@Column(columnDefinition="tinyint(1) default 1")
@@ -50,14 +52,13 @@ public class Pessoa implements UserDetails {
 	private LocalDateTime dataDesbloqueio;
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	private List<Perfil> perfis = new ArrayList<Perfil>(Arrays.asList(new Perfil("ROLE_USER")));
+	private List<Perfil> perfis = new ArrayList<Perfil>(Arrays.asList(new Perfil("ROLE_ALUNO")));
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private Endereco endereco;
+	private String endereco;
 
 	private LocalDateTime dataDeCadastro;
 
-	public Pessoa(Integer codigo, String nome, String cpf, String telefone, String email, Endereco endereco,
+	public Pessoa(Integer codigo, String nome, String cpf, String telefone, String email, String endereco,
 			LocalDateTime dataDeCadastro) {
 		super();
 		this.nome = nome;
@@ -104,11 +105,11 @@ public class Pessoa implements UserDetails {
 		this.email = email;
 	}
 
-	public Endereco getEndereco() {
+	public String getEndereco() {
 		return endereco;
 	}
 
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
 
@@ -166,6 +167,15 @@ public class Pessoa implements UserDetails {
 
 	public void setPerfis(List<Perfil> perfis) {
 		this.perfis = perfis;
+	}
+	
+
+	public double getCarteira() {
+		return carteira;
+	}
+
+	public void setCarteira(double carteira) {
+		this.carteira = carteira;
 	}
 
 	@Override

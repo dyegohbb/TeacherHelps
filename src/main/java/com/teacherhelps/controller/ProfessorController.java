@@ -1,14 +1,18 @@
 package com.teacherhelps.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teacherhelps.controller.dto.ProfessorDTO;
 import com.teacherhelps.model.Professor;
 import com.teacherhelps.service.ProfessorService;
 
@@ -21,7 +25,7 @@ public class ProfessorController {
 
 	@CrossOrigin()
 	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<List<Professor>> listAll() throws Exception {
+	public ResponseEntity<List<ProfessorDTO>> listAll() throws Exception {
 //		Professor professor = new Professor();
 //		Endereco endereco = new Endereco();
 //		endereco.setRua("sao joao");
@@ -54,10 +58,27 @@ public class ProfessorController {
 //		professor.setSenha(encoder.encode(professor.getSenha()));
 //		ProfessorService.salvar(professor);
 		List<Professor> professores = ProfessorService.listAll();
-		if (professores.isEmpty()) {
+		List<ProfessorDTO> professoresObj = new ArrayList<>();
+		for (Professor professor : professores) {
+			ProfessorDTO prof = new ProfessorDTO(professor);
+			professoresObj.add(prof);
+		}
+		
+		if (professoresObj.isEmpty()) {
 			return ResponseEntity.noContent().build();
 		} else {
-			return ResponseEntity.ok().body(professores);
+			return ResponseEntity.ok().body(professoresObj);
+		}
+	}
+	
+	@CrossOrigin()
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Object> cadastrar(@RequestBody Map<?, ?> professor) throws Exception {
+		String status = this.ProfessorService.salvar(professor);
+		if(status.equals("Salvo com sucesso")) {
+			return ResponseEntity.ok().build();
+		}else{
+			return ResponseEntity.badRequest().body("erro ao cadastrar");
 		}
 	}
 }
