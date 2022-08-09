@@ -1,5 +1,6 @@
 package com.teacherhelps.controller;
 
+import java.security.Principal;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teacherhelps.model.dao.AgendamentoDAO;
+import com.teacherhelps.model.dao.AlunoDAO;
+import com.teacherhelps.model.dao.ProfessorDAO;
+import com.teacherhelps.service.AgendamentoService;
 import com.teacherhelps.service.AlunoService;
+import com.teacherhelps.service.ProfessorService;
 
 @RestController
 @RequestMapping(value = "/aluno")
@@ -18,6 +24,21 @@ public class AlunoController {
 
 	@Autowired
 	AlunoService alunoService;
+	
+	@Autowired
+	ProfessorService professorService;
+	
+	@Autowired
+	ProfessorDAO professorDAO;
+	
+	@Autowired
+	AlunoDAO alunoDAO;
+	
+	@Autowired
+	AgendamentoDAO agendamentoDAO;
+	
+	@Autowired
+	AgendamentoService agendamentoService;
 	
 //	@RequestMapping(method = RequestMethod.GET)
 //	public ResponseEntity<List<Aluno>> listAll() throws Exception {
@@ -42,4 +63,16 @@ public class AlunoController {
 		}
 	}
 	
+	@CrossOrigin()
+	@RequestMapping(method = RequestMethod.POST, value = "/agendar")
+	public ResponseEntity<Object> agendar(@RequestBody Map<?, ?> payload, Principal principal) throws Exception {
+		String status = agendamentoService.agendar(payload, principal);
+		
+		if(status.equals("sucesso")) {
+			return ResponseEntity.ok().build();
+		}
+		
+		return ResponseEntity.badRequest().body("Erro ao agendar");
+		
+	}
 }

@@ -32,7 +32,7 @@ public class Professor extends Pessoa {
 		super();
 	};
 	
-	public Professor(Integer codigo, String nome, String cpf, String telefone, String email, String endereco,
+	public Professor(Long codigo, String nome, String cpf, String telefone, String email, String endereco,
 			LocalDateTime dataDeCadastro, List<Disponibilidade> disponibilidade, double valorPorHora, String sobre,
 			Disciplina disciplina) {
 		super(codigo, nome, cpf, telefone, email, endereco, dataDeCadastro);

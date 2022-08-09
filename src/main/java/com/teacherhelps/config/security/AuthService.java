@@ -11,10 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.teacherhelps.model.Pessoa;
-import com.teacherhelps.model.Professor;
-import com.teacherhelps.model.dao.AlunoDAO;
 import com.teacherhelps.model.dao.PessoaDAO;
-import com.teacherhelps.model.dao.ProfessorDAO;
 
 @Service
 public class AuthService implements UserDetailsService{

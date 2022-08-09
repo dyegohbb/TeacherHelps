@@ -18,10 +18,9 @@ public class Aluno extends Pessoa {
 		super();
 	}
 	
-	public Aluno(Integer codigo, String nome, String cpf, String telefone, String email, String endereco,
+	public Aluno(Long codigo, String nome, String cpf, String telefone, String email, String endereco,
 			LocalDateTime dataDeCadastro, Integer codigo2, String alunoAsd) {
 		super(codigo, nome, cpf, telefone, email, endereco, dataDeCadastro);
-		codigo = codigo2;
 		this.alunoAsd = alunoAsd;
 	}
 

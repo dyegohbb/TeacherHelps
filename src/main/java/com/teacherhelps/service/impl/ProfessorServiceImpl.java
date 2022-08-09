@@ -1,9 +1,15 @@
 package com.teacherhelps.service.impl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,5 +46,80 @@ public class ProfessorServiceImpl implements ProfessorService {
 	
 		return null;
 		
+	}
+
+	@Override
+	public Disponibilidade prepareDisponibilidade(Map<?, ?> payload) {
+		Map<?, ?> mapDisponibilidade = (Map<?, ?>) payload.get("disponibilidade");
+		Disponibilidade d = new Disponibilidade();
+		String inicio = mapDisponibilidade.get("dataInicio").toString().replace("/", "-");
+		String fim = mapDisponibilidade.get("dataFim").toString().replace("/", "-");
+		String startDate = inicio.substring(0, inicio.length() - 3);
+		String endDate = fim.substring(0, fim.length() - 3);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+		LocalDateTime dataInicio = LocalDateTime.parse(startDate, formatter);
+		LocalDateTime dataFim = LocalDateTime.parse(endDate, formatter);;
+		d.setDataInicio(dataInicio);
+		d.setDataFim(dataFim);
+		return d;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Disponibilidade> prepareListDisponibilidades(Map<?, ?> payload) {
+		
+		try {
+			ArrayList<LinkedHashMap<?, ?>> disponibilidadeMap = new ArrayList<LinkedHashMap<?, ?>>();
+			
+			disponibilidadeMap.addAll((Collection<? extends LinkedHashMap<?, ?>>) payload.get("disponibilidade"));
+			List<Disponibilidade> disponibilidades = new ArrayList<>();
+			disponibilidadeMap.forEach((disponibilidade) -> {
+				Disponibilidade d = new Disponibilidade();
+				String inicio = disponibilidade.get("dataInicio").toString().replace("T", " ");
+				String fim = disponibilidade.get("dataFim").toString().replace("T", " ");
+				String startDate = inicio.substring(0, inicio.length() - 3);
+				String endDate = fim.substring(0, fim.length() - 3);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				LocalDateTime dataInicio = LocalDateTime.parse(startDate, formatter);
+				LocalDateTime dataFim = LocalDateTime.parse(endDate, formatter);;
+				d.setDataInicio(dataInicio);
+				d.setDataFim(dataFim);
+				disponibilidades.add(d);
+			});
+			
+			
+			return disponibilidades;
+		} catch (Exception e) {
+			System.out.printf(e.getMessage(), e);
+		}
+		
+		return null;
+	}
+
+	@Override
+	public Optional<Professor> findById(Long professorId) {
+		try {
+			Optional<Professor> professor = professorDAO.findById(professorId);
+			return professor;
+		} catch (Exception e) {
+			System.out.printf(e.getMessage(), e);
+		}
+		return Optional.empty();
+	}
+
+	@Override
+	public List<Disponibilidade> alterarDisponibilidade(Professor professor, Map<?, ?> disponibilidadesMap) {
+		List<Disponibilidade> disponibilidades = this.prepareListDisponibilidades(disponibilidadesMap);
+		
+		if(disponibilidades != null) {
+			professor.setDisponibilidade(disponibilidades);
+			try {
+				professorDAO.save(professor);
+			} catch (Exception e) {
+				System.out.printf(e.getMessage(), e);
+			}
+		}
+		
+		return disponibilidades;
 	}
 }

@@ -23,10 +23,9 @@ public class AlunoServiceImpl implements AlunoService {
 			alunoDAO.save(alun);
 			return "Salvo com sucesso";
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.printf(e.getMessage(), e);
 		}
 	
 		return null;
-		
 	}
 }

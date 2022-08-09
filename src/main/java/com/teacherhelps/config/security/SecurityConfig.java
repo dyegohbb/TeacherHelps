@@ -17,7 +17,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.teacherhelps.model.dao.PessoaDAO;
 
-@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -48,21 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers(HttpMethod.POST, "/aluno").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.antMatchers(HttpMethod.GET, "/disciplina").permitAll()
+		.antMatchers(HttpMethod.POST, "/aluno/agendar").hasRole("ALUNO")
 		.anyRequest().authenticated().and().cors()
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and().addFilterBefore(new TokenAuth(tokenService, pessoaDAO), UsernamePasswordAuthenticationFilter.class);
 	}
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http.authorizeRequests().antMatchers("/image/**").permitAll().antMatchers("/").permitAll().antMatchers("/css/**").permitAll()
-//				.antMatchers("/login/**").permitAll()
-//				.antMatchers("/cadastro/**").permitAll()
-////				.antMatchers("/professor").permitAll()
-//				.anyRequest().authenticated().and().formLogin().loginProcessingUrl("/login").and()
-//				.logout(logout -> {
-//					logout.disable();
-//				}).csrf().disable();
-//	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

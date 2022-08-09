@@ -7,7 +7,7 @@ import com.teacherhelps.model.Aluno;
 import com.teacherhelps.model.Perfil;
 
 public class AlunoDTO {
-	private Integer codigo;
+	private Long codigo;
 	
 	private String nome;
 
@@ -39,11 +39,11 @@ public class AlunoDTO {
 		this.dataDeCadastro = aluno.getDataDeCadastro();
 	}
 	
-	public Integer getCodigo() {
+	public Long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(Integer codigo) {
+	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
 

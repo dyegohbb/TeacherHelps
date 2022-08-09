@@ -10,7 +10,7 @@ import com.teacherhelps.model.Professor;
 
 public class ProfessorDTO {
 
-	private Integer codigo;
+	private Long codigo;
 	
 	private String nome;
 
@@ -52,11 +52,11 @@ public class ProfessorDTO {
 		this.dataDeCadastro = professor.getDataDeCadastro();
 	}
 
-	public Integer getCodigo() {
+	public Long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(Integer codigo) {
+	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
 

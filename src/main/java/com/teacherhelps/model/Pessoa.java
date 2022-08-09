@@ -16,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +28,7 @@ public class Pessoa implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE)
-	private Integer codigo;
+	private Long codigo;
 	
 	private String nome;
 
@@ -58,9 +57,8 @@ public class Pessoa implements UserDetails {
 
 	private LocalDateTime dataDeCadastro;
 
-	public Pessoa(Integer codigo, String nome, String cpf, String telefone, String email, String endereco,
+	public Pessoa(Long codigo, String nome, String cpf, String telefone, String email, String endereco,
 			LocalDateTime dataDeCadastro) {
-		super();
 		this.nome = nome;
 		this.cpf = cpf;
 		this.telefone = telefone;
@@ -121,11 +119,11 @@ public class Pessoa implements UserDetails {
 		this.dataDeCadastro = dataDeCadastro;
 	}
 
-	public Integer getCodigo() {
+	public Long getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(Integer codigo) {
+	public void setCodigo(Long codigo) {
 		this.codigo = codigo;
 	}
 

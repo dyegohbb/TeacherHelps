@@ -10,6 +10,6 @@ public interface PessoaDAO extends JpaRepository<Pessoa, Long> {
 	
 	Optional<Pessoa> findByEmail(String email);
 
-	Pessoa findByCodigo(Integer codigo);
+	Pessoa findByCodigo(Long idUsuario);
 
 }

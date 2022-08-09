@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.teacherhelps.config.security.TokenService;
 import com.teacherhelps.controller.dto.TokenDto;
 import com.teacherhelps.controller.form.LoginForm;
+import com.teacherhelps.model.Aluno;
+import com.teacherhelps.model.Pessoa;
+import com.teacherhelps.model.Professor;
 
 @RestController
 @RequestMapping("/auth")
@@ -35,8 +38,16 @@ public class AutenticacaoController {
 		
 		try {
 			Authentication authentication = authManager.authenticate(dadosLogin);
+			Pessoa logado = (Pessoa) authentication.getPrincipal();
 			String token = tokenService.gerarToken(authentication);
-			return ResponseEntity.ok(new TokenDto(token));
+			TokenDto tokenDTO = new TokenDto(token, logado.getCodigo());
+			if(logado.getClass().getSimpleName() == Aluno.class.getSimpleName()) {
+				tokenDTO.setType("aluno");
+			}else if(logado.getClass().getSimpleName() == Professor.class.getSimpleName()) {
+				tokenDTO.setType("professor");
+			}
+			
+			return ResponseEntity.ok(tokenDTO);
 		} catch (AuthenticationException e) {
 			return ResponseEntity.badRequest().build();
 		}
