@@ -1,10 +1,13 @@
 package com.teacherhelps.service.impl;
 
+import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.teacherhelps.controller.dto.AlunoDTO;
 import com.teacherhelps.model.Aluno;
 import com.teacherhelps.model.dao.AlunoDAO;
 import com.teacherhelps.service.AlunoService;
@@ -27,5 +30,15 @@ public class AlunoServiceImpl implements AlunoService {
 		}
 	
 		return null;
+	}
+
+	@Override
+	public Optional<AlunoDTO> findAlunoInfo(Principal principal) {
+		Optional<Aluno> aluno = alunoDAO.findByEmail(principal.getName());
+		if(aluno.isPresent()) {
+			Optional<AlunoDTO> alunoObj = Optional.ofNullable(new AlunoDTO(aluno.get()));
+			return alunoObj;
+		}
+		return Optional.empty();
 	}
 }

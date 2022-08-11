@@ -2,6 +2,7 @@ package com.teacherhelps.controller;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teacherhelps.controller.dto.AlunoDTO;
+import com.teacherhelps.model.Aluno;
 import com.teacherhelps.model.dao.AgendamentoDAO;
 import com.teacherhelps.model.dao.AlunoDAO;
 import com.teacherhelps.model.dao.ProfessorDAO;
@@ -26,31 +29,21 @@ public class AlunoController {
 	AlunoService alunoService;
 	
 	@Autowired
-	ProfessorService professorService;
-	
-	@Autowired
-	ProfessorDAO professorDAO;
-	
-	@Autowired
-	AlunoDAO alunoDAO;
-	
-	@Autowired
-	AgendamentoDAO agendamentoDAO;
-	
-	@Autowired
 	AgendamentoService agendamentoService;
 	
-//	@RequestMapping(method = RequestMethod.GET)
-//	public ResponseEntity<List<Aluno>> listAll() throws Exception {
-//
-//		List<Aluno> empresas = null;
-//		if (empresas.isEmpty()) {
-//			return ResponseEntity.noContent().build();
-//		} else {
-//			return ResponseEntity.ok().body(empresas);
-//		}
-//
-//	}
+	@CrossOrigin()
+	@RequestMapping(value="/get",method = RequestMethod.GET)
+	public ResponseEntity<AlunoDTO> getAlunoInfo(Principal principal) throws Exception {
+
+		Optional<AlunoDTO> aluno = alunoService.findAlunoInfo(principal);
+		
+		if (!aluno.isPresent()){
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.ok().body(aluno.get());
+		}
+
+	}
 	
 	@CrossOrigin()
 	@RequestMapping(method = RequestMethod.POST)

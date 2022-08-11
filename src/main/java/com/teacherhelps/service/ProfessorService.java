@@ -1,5 +1,6 @@
 package com.teacherhelps.service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import org.apache.tomcat.util.json.ParseException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.teacherhelps.controller.dto.ProfessorDTO;
 import com.teacherhelps.model.Disponibilidade;
 import com.teacherhelps.model.Professor;
 
@@ -24,4 +26,6 @@ public interface ProfessorService {
 	List<Disponibilidade> prepareListDisponibilidades(Map<?, ?> payload);
 
 	public List<Disponibilidade> alterarDisponibilidade(Professor professor, Map<?, ?> disponibilidadesMap);
+
+	public Optional<ProfessorDTO> findProfessorInfo(Principal principal);
 }

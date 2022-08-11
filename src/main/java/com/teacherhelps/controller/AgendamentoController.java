@@ -1,5 +1,6 @@
 package com.teacherhelps.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -70,11 +71,11 @@ public class AgendamentoController {
 	}
 	
 	@CrossOrigin()
-	@RequestMapping(value="/deletar", method = RequestMethod.GET)
-	public ResponseEntity<AgendamentoDTO> deletarAgendamento(@RequestHeader Long agendamentoId) throws Exception {
-		String status = agendamentoService.deletarAgendamento(agendamentoId);
+	@RequestMapping(value="/reembolso", method = RequestMethod.GET)
+	public ResponseEntity<AgendamentoDTO> reembolsarAgendamento(@RequestHeader Long agendamentoId) throws Exception {
+		String status = agendamentoService.reembolsarAgendamento(agendamentoId);
 		
-		if(status.equals("deletado")){
+		if(status.equals("reembolsado")){
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.badRequest().build();

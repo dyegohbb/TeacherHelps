@@ -17,5 +17,5 @@ public interface AgendamentoService {
 
 	Optional<Agendamento> confirmarAgendamento(Long agendamentoId);
 
-	String deletarAgendamento(Long agendamentoId) throws Exception;
+	String reembolsarAgendamento(Long agendamentoId) throws Exception;
 }

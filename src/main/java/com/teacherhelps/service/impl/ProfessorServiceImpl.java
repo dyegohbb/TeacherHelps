@@ -1,5 +1,6 @@
 package com.teacherhelps.service.impl;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.teacherhelps.controller.dto.AlunoDTO;
+import com.teacherhelps.controller.dto.ProfessorDTO;
+import com.teacherhelps.model.Aluno;
 import com.teacherhelps.model.Disponibilidade;
 import com.teacherhelps.model.Perfil;
 import com.teacherhelps.model.Professor;
@@ -121,5 +125,15 @@ public class ProfessorServiceImpl implements ProfessorService {
 		}
 		
 		return disponibilidades;
+	}
+
+	@Override
+	public Optional<ProfessorDTO> findProfessorInfo(Principal principal) {
+		Optional<Professor> professor = professorDAO.findByEmail(principal.getName());
+		if(professor.isPresent()) {
+			Optional<ProfessorDTO> professorObj = Optional.ofNullable(new ProfessorDTO(professor.get()));
+			return professorObj;
+		}
+		return Optional.empty();
 	}
 }

@@ -1,5 +1,6 @@
 package com.teacherhelps.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.teacherhelps.controller.dto.AlunoDTO;
 import com.teacherhelps.controller.dto.ProfessorDTO;
 import com.teacherhelps.model.Disponibilidade;
 import com.teacherhelps.model.Professor;
@@ -88,5 +90,19 @@ public class ProfessorController {
 		} else {
 			return ResponseEntity.ok().build();
 		}
+	}
+	
+	@CrossOrigin()
+	@RequestMapping(value="/get",method = RequestMethod.GET)
+	public ResponseEntity<ProfessorDTO> getProfessorInfo(Principal principal) throws Exception {
+
+		Optional<ProfessorDTO> professor = professorService.findProfessorInfo(principal);
+		
+		if (!professor.isPresent()){
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.ok().body(professor.get());
+		}
+
 	}
 }

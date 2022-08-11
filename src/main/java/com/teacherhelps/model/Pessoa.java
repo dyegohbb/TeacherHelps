@@ -32,6 +32,7 @@ public class Pessoa implements UserDetails {
 	
 	private String nome;
 
+	@Column(unique = true)
 	private String cpf;
 
 	private String telefone;

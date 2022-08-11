@@ -38,16 +38,17 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 	@Override
 	public String agendar(Map<?, ?> payload, Principal principal) {
 		Long professorId = ((Number) payload.get("professorId")).longValue();
-		Optional<Aluno> aluno = alunoDAO.findByEmail(principal.getName());
+		Optional<Aluno> alunoOpt = alunoDAO.findByEmail(principal.getName());
 		
-		if(professorId != null && aluno.isPresent()) {
+		if(professorId != null && alunoOpt.isPresent()) {
 			Optional<Professor> professorOpt = professorDAO.findById(professorId);
 			
 			if(professorOpt.isPresent()) {
 				try {
 					Professor professor = professorOpt.get();
+					Aluno aluno = alunoOpt.get();
 					Disponibilidade disponibilidade = professorService.prepareDisponibilidade(payload);
-					Agendamento agendamento = new Agendamento(aluno.get(), professor, disponibilidade);
+					Agendamento agendamento = new Agendamento(aluno, professor, disponibilidade);
 					agendamentoDAO.save(agendamento);
 					
 					List<Disponibilidade> disponibilidades = professor.getDisponibilidade();
@@ -58,6 +59,8 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 							novasDisp.add(disp);
 						}
 					});
+					
+					aluno.setCarteira(aluno.getCarteira() - professor.getValorPorHora());
 					professor.setDisponibilidade(novasDisp);
 					professorDAO.save(professor);
 					return "sucesso";
@@ -89,12 +92,13 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 		if(agendamento.isPresent()) {
 			LocalDateTime intervaloInicial = LocalDateTime.now().plusMinutes(-10);
 			LocalDateTime intervaloFinal = LocalDateTime.now().plusMinutes(10);
-			if(agendamento.get().getDisponibilidade().getDataInicio().isBefore(intervaloInicial) && !agendamento.get().getStatus().equals("confirmado")) {
+			if(agendamento.get().getDisponibilidade().getDataInicio().isBefore(intervaloInicial) && !agendamento.get().getStatus().equals("confirmado")
+					&& !agendamento.get().getStatus().equals("reembolsado")) {
 				agendamento.get().setStatus("atrasado");
 				agendamentoDAO.save(agendamento.get());
 			}else if(agendamento.get().getDisponibilidade().getDataInicio().isAfter(intervaloInicial) 
 					&& agendamento.get().getDisponibilidade().getDataInicio().isBefore(intervaloFinal) 
-					&& !agendamento.get().getStatus().equals("confirmado")) {
+					&& !agendamento.get().getStatus().equals("confirmado") && !agendamento.get().getStatus().equals("reembolsado")) {
 				agendamento.get().setStatus("disponivel");
 				agendamentoDAO.save(agendamento.get());
 			}
@@ -106,8 +110,10 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 	public Optional<Agendamento> confirmarAgendamento(Long agendamentoId) {
 		Optional<Agendamento> agendamento = agendamentoDAO.findById(agendamentoId);
 		if(agendamento.isPresent()) {
-			if(!agendamento.get().getStatus().equals("atrasado") && !agendamento.get().getStatus().equals("confirmado")) {
+			if(agendamento.get().getStatus().equals("disponivel")) {
 				agendamento.get().setStatus("confirmado");
+				Professor professor = agendamento.get().getProfessor();
+				professor.setCarteira(professor.getCarteira() + professor.getValorPorHora());
 				agendamentoDAO.save(agendamento.get());
 			}
 		}
@@ -115,12 +121,24 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 	}
 
 	@Override
-	public String deletarAgendamento(Long agendamentoId) throws Exception {
-		try {
-			agendamentoDAO.deleteById(agendamentoId);
-			return "deletado";
-		} catch (Exception e) {
-			System.out.printf(e.getMessage(), e);
+	public String reembolsarAgendamento(Long agendamentoId) throws Exception {
+		Optional<Agendamento> agendamento = agendamentoDAO.findById(agendamentoId);
+		
+		if(agendamento.isPresent()) {
+			if(!agendamento.get().getStatus().equals("confirmado") && !agendamento.get().getStatus().equals("reembolsado")) {
+				Aluno aluno = agendamento.get().getAluno();
+				Double valorPorHora = agendamento.get().getProfessor().getValorPorHora();
+				aluno.setCarteira(aluno.getCarteira() + valorPorHora);
+				agendamento.get().setStatus("reembolsado");
+				
+				try {
+					agendamentoDAO.save(agendamento.get());
+					return "reembolsado";
+				} catch (Exception e) {
+					System.out.printf(e.getMessage(), e);
+				}
+			}
+			
 		}
 		
 		return "";
